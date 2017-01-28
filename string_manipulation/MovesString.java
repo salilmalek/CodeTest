@@ -1,96 +1,59 @@
-/**
- * Copyright 2016-2017 Shyam Bhimani
- */
-
-package string_manipulation;
+package com.java.keywords;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class MovesString {
 
-	public void easyStrings(String st1, String st2) {
+	public int swapLeftToRight(String st1, String st2) {
 
-		char a[] = st1.toCharArray();
+		char temp;
+		char tempArr[] = st1.toCharArray();
+		int count = 0;
 
-		char b[] = st2.toCharArray();
+		for (int i = 0; i < tempArr.length - 1; i++) {
+			temp = tempArr[i];
+			tempArr[i] = tempArr[i + 1];
+			tempArr[i + 1] = temp;
 
-		char temp = 'a';
-		char tempArr[]=st1.toCharArray();
-		int count=0;
-
-		//System.out.println("A="+new String(a));
-	//	System.out.println("B="+new String(b));
-		
-		
-		if (1 > a.length || 2000 < b.length) {
-
-			System.out.println("Invalid input");
-
-		} else if (a.length == b.length) {
-
-			if (a != b) {
-				// aaaab
-				// baaaa
-				
-				//Step One.
-				for(int i=0; i<tempArr.length-1;i++){
-					count++;
-					temp=tempArr[i];
-					tempArr[i]=tempArr[i+1];
-					tempArr[i+1]=temp;
-					if(tempArr==b){
-						System.out.println(count);
-						break;
-					}
-			//		System.out.println("Temp Array: " +new String(tempArr));
-				}
-				
-				//Step 2.
-				count=0;
-				char []tempArr1=a;
-				//System.out.println("TEMP ARRY AFTET STEP 1 = "+new String(tempArr1));
-				temp=tempArr1[0];
-				tempArr1[0]=tempArr1[tempArr1.length-1];
-				tempArr1[tempArr1.length-1]=temp;
-				count++;
-				if(Arrays.equals(tempArr1, b)){
-					System.out.println(count);
-				}
-			
-			/*	if (a[0] == b[b.length - 1] && b[0] == a[a.length - 1]) {
-
-					a[0] = b[0];
-					a[a.length - 1] = b[b.length - 1];
-
-					if (a == b) {
-
-						System.out.println("took 1 step");
-
-					} else if(a != b){
-						
-
-						for (int i = 0; i < (a.length - 1); i++) {
-
-							temp = a[i + 1];
-							a[i + 1] = a[i];
-							a[i] = temp;
-
-							if (a == b) {
-
-								System.out.println("Took 2 Steps");
-							}
-						}
-					}
-
-				}*/
-
+			if (Arrays.equals(tempArr, st2.toCharArray())) {
+				count = i + 1;
+				break;
 			}
-
-		} else {
-			
-			System.out.println("invalid input");
 		}
+		
+		return count;
 
+	}
+
+	public int swapRightToLeft(String st1, String st2) {
+		char temp;
+		char tempArr[] = st1.toCharArray();
+		int count = 0;
+
+		for (int i = tempArr.length - 1; i > 0; i--) {
+			temp = tempArr[i];
+			tempArr[i] = tempArr[i - 1];
+			tempArr[i - 1] = temp;
+			
+			if (Arrays.equals(tempArr, st2.toCharArray())) {
+				count=tempArr.length-i;
+				break;
+			}
+		}
+		
+		return count;
+
+	}
+
+	public String swapLastFirst(String st1) {
+		char temp;
+		char tempArr[] = st1.toCharArray();
+		temp = tempArr[0];
+		tempArr[0] = tempArr[tempArr.length - 1];
+		tempArr[tempArr.length - 1] = temp;
+
+		return new String(tempArr);
 	}
 
 	public static void main(String[] args) {
@@ -98,14 +61,44 @@ public class MovesString {
 		 * Enter your code here. Read input from STDIN. Print output to STDOUT.
 		 * Your class should be named Solution.
 		 */
+		Scanner sc = new Scanner(System.in);
 
-		String st1 = "baaaaac";
-		String st2 = "caaaaab";
+		String st1 = sc.next();
+		String st2 = sc.next();
 
 		MovesString m = new MovesString();
 
-		m.easyStrings(st1, st2);
+		if (1 < st1.length() && st1.length() < 2000 && 1 < st2.length() && st2.length() < 2000 && st1.length()==st2.length() && !st1.equals(st2)) {
+			String st1new = m.swapLastFirst(st1);
+			if (st1new.equals(st2)) {
+				System.out.println(1);
+			} else {
+				int count = m.swapLeftToRight(st1, st2);
+				int count1 = m.swapRightToLeft(st1, st2);
+				if (count != 0) {
+					if (count1 != 0) {
+						if (count < count1) {
+							System.out.println( count);
+						} else {
+							System.out.println( count1);
+						}
+					} else {
+						System.out.println( count);
+					}
+				} else if (count1 != 0) {
+					if (count != 0) {
+						if (count1 < count) {
+							System.out.println( count1);
+						} else {
+							System.out.println( count);
+						}
+					} else {
+						System.out.println( count1);
+					}
+				}
+
+			}
+		}
 
 	}
-
 }
